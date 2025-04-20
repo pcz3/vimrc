@@ -1,0 +1,94 @@
+" GENERAL SETTINGS
+set nocompatible
+
+" Allow mouse selection in all modes
+set mouse=a
+
+" Tag jumping
+command! MakeTags !ctags -R .
+
+" ==============================================================================
+
+" FORMAT SETTINGS
+" Turn on syntax highlighting
+syntax enable
+
+" Turn on line numbers
+set number 
+
+" Turn on cursor position
+set ruler
+
+" Row highlighting
+augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
+
+" Set line width column
+augroup WidthRuler
+    au!
+    au InsertEnter * set cc=81
+    au InsertLeave * set cc=
+augroup END
+hi ColorColumn ctermbg=darkgrey
+
+" Set line width and wrap
+set wrap
+" ==============================================================================
+
+" FILE SYSTEM
+filetype plugin on
+
+" Tab completion
+set path+=**
+
+" Display matching files
+set wildmenu
+
+" File browsing
+let g:netrw_winsize=18
+let g:netrw_banner=0
+let g:netrw_browse_split=4
+let g:netrw_liststyle=3
+let g:netrw_preview=1
+setlocal nocursorline
+augroup ProjectDrawer
+    au!
+    au VimEnter * :Vexplore
+    au VimEnter * :wincmd l
+augroup END
+" ==============================================================================
+
+" TERMINAL SETTINGS
+" Open split terminal
+augroup SplitTerm
+    au!
+    au VimEnter * :bel term
+    au VimEnter * :12 wincmd _
+    au VimEnter * :wincmd k
+augroup END
+" ==============================================================================
+
+" INDENTATION
+" Apply auto indentation
+set autoindent
+set smartindent
+
+" Modify indentation
+function! SetTab()
+	if &filetype == "html"
+		setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+	else
+		setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+	endif
+endfunction		
+autocmd! BufReadPost,BufNewFile * call SetTab()
+
+" Set syntax-based folding
+" zo Open fold
+" zc Close fold
+" zR Remove folds
+" set foldmethod=syntax
+" ==============================================================================
